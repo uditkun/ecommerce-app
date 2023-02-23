@@ -1,0 +1,65 @@
+[
+  {
+    "id": 12345,
+    "name": "John",
+    "gender": "M",
+    "phone": ["9923564521", "9274635260"],
+    "email": "john@gmail.com",
+    "password": "mynameisjohn",
+    "checkedOutItems": [],
+    "cart": [
+      {
+        "id": 2,
+        "companyName": "DEF",
+        "href": "product_2",
+        "name": "Product 2",
+        "price": "$20",
+        "offers": 2,
+        "imgSrc": "/placeholder.png",
+        "discount": 20,
+        "rating": 4.3
+      }
+    ],
+    "orders": [
+      {
+        "id": 4,
+        "companyName": "JKL",
+        "href": "product_4",
+        "name": "Product 4",
+        "price": "$40",
+        "offers": 1,
+        "imgSrc": "/placeholder.png",
+        "discount": 15,
+        "rating": 4.3,
+        "quantity": 1
+      }
+    ],
+    "wishlist": [{ "id": 3 }, { "id": 4 }],
+    "address": ["H-12,Naya Bazar,Surpa,India"]
+  },
+  {
+    "id": 12435,
+    "name": "Mona",
+    "gender": "F",
+    "phone": ["9923564874", "9274639863"],
+    "email": "mona@gmail.com",
+    "password": "mona",
+    "checkedOutItems": [],
+    "cart": [
+      {
+        "id": 2,
+        "companyName": "DEF",
+        "href": "product_2",
+        "name": "Product 2",
+        "price": "$20",
+        "offers": 2,
+        "imgSrc": "/placeholder.png",
+        "discount": 20,
+        "rating": 4.3
+      }
+    ],
+    "orders": [],
+    "wishlist": [{ "id": 1 }, { "id": 5 }],
+    "address": ["H-2,Gulabli Sheher,Kurpa,India"]
+  }
+]
