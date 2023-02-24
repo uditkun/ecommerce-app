@@ -13,6 +13,7 @@ import useMenuToggle from "../hooks/useMenuToggle";
 import { useGlobalState } from "./Context";
 import useLogOut from "../hooks/useLogOut";
 import SearchBar from "./SearchBar";
+import { getHref } from "../utils/handleForms";
 
 function Header() {
   const menuIcon = useRef<HTMLLIElement>(null);
@@ -85,7 +86,7 @@ function Header() {
             return (
               <li key={li.name}>
                 <Link
-                  href={li.href}
+                  href={getHref(li.name)}
                   className="py-3 px-6 rounded-sm hover:bg-gray-300 cursor-pointer block"
                 >
                   <FontAwesomeIcon icon={li.icon} className="mr-2" /> {li.name}

@@ -11,9 +11,8 @@
       {
         "id": 2,
         "companyName": "DEF",
-        "href": "product_2",
         "name": "Product 2",
-        "price": "$20",
+        "price": 20,
         "offers": 2,
         "imgSrc": "/placeholder.png",
         "discount": 20,
@@ -24,9 +23,8 @@
       {
         "id": 4,
         "companyName": "JKL",
-        "href": "product_4",
         "name": "Product 4",
-        "price": "$40",
+        "price": 40,
         "offers": 1,
         "imgSrc": "/placeholder.png",
         "discount": 15,
@@ -49,9 +47,8 @@
       {
         "id": 2,
         "companyName": "DEF",
-        "href": "product_2",
         "name": "Product 2",
-        "price": "$20",
+        "price": 20,
         "offers": 2,
         "imgSrc": "/placeholder.png",
         "discount": 20,

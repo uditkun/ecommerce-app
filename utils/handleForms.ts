@@ -35,4 +35,11 @@ const validateForm = (formData: any): boolean => {
 //   console.log(searchVal);
 // };
 
-export { validateForm };
+const getHref = (name: string) => {
+  return name
+    .split(" ")
+    .map((i) => i.toLowerCase())
+    .join("_");
+};
+
+export { validateForm, getHref };

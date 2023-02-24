@@ -7,6 +7,8 @@ import {
   ACTIONS,
 } from "../../components/Context";
 import WishlistHeart from "../../components/WishlistHeart";
+import { Product } from "../../utils/types/Product";
+import { getHref } from "../../utils/handleForms";
 
 export const getStaticPaths = () => {
   return {
@@ -26,7 +28,7 @@ export const getStaticProps = ({ params }: any) => {
   // };
   const products = getLocalProducts();
   const product = products.filter(
-    (item: any) => item.href === params.product
+    (item: Product) => getHref(item.name) === params.product
   )[0];
 
   if (product) {
@@ -71,7 +73,7 @@ function ProductPage({ product }: any) {
           <button
             onClick={() => {
               let isProductInCart = cart?.find(
-                (i: any) => i?.id === product?.id
+                (i: Product) => i?.id === product?.id
               );
               if (isProductInCart) {
                 dispatch({

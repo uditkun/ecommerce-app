@@ -1,10 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
+import { getHref } from "../utils/handleForms";
 
 const Card = ({ item, helperLink = "" }: any) => {
   return (
     <Link
-      href={helperLink + "/" + item.href}
+      href={helperLink + "/" + getHref(item.name)}
       className="max-w-[250px] pb-2 bg-slate-600 rounded-t-lg rounded-b-md flex flex-col cursor-pointer"
     >
       <Image

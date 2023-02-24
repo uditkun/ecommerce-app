@@ -9,9 +9,10 @@ import Card from "../../components/Card";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
+import { CartProduct } from "../../utils/types/Product";
 
 const Orders = () => {
-  const [orderedProducts, setOrderedProducts] = useState<any>([]);
+  const [orderedProducts, setOrderedProducts] = useState<CartProduct[]>([]);
   const router = useRouter();
   const dispatch = useDispatchGlobalState();
   const { auth } = useGlobalState();

@@ -9,6 +9,7 @@ import {
   useDispatchGlobalState,
   ACTIONS,
 } from "../components/Context";
+import { CartProduct, Product } from "../utils/types/Product";
 
 function Cart() {
   const [cartProducts, setCartProducts] = useState([]);
@@ -22,24 +23,24 @@ function Cart() {
   const getCheckoutItems = () => {
     const initialCheckoutItems = [
       ...auth.checkedOutItems,
-      ...cartProducts.map((item: any) => {
+      ...cartProducts.map((item: CartProduct) => {
         item.quantity ||= 1;
         return item;
       }),
     ];
     const uniqueItems = initialCheckoutItems.filter(
-      (product: any, index: number, arr: any[]) =>
+      (product: CartProduct, index: number, arr: CartProduct[]) =>
         arr.findIndex((item: any) => item.id === product.id) === index
     );
 
     const uniqueList = uniqueItems
-      .map((product: any) => {
+      .map((product: CartProduct) => {
         return initialCheckoutItems.filter(
-          (item: any) => item.id === product.id
+          (item: CartProduct) => item.id === product.id
         );
       })
       .map((arr: any[]) => {
-        return arr.reduce((acc: any, curr: any) => {
+        return arr.reduce((acc: CartProduct, curr: CartProduct) => {
           return { ...acc, quantity: curr.quantity + acc.quantity };
         });
       });
@@ -51,7 +52,7 @@ function Cart() {
       <h2 className="text-2xl font-semibold pb-4 text-center">Cart Items</h2>
       <ul className="flex gap-4 flex-wrap justify-center items-center relative mx-auto max-w-[1200px] px-5">
         {cartProducts.length ? (
-          cartProducts?.map((product: any) => {
+          cartProducts?.map((product: CartProduct) => {
             return (
               <li
                 className="p-2 md:w-3/5 bg-[#f2f2f2] shadow-light-step rounded flex flex-col md:flex-row md:gap-4 md:justify-between"

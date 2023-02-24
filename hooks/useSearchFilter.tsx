@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Product } from "../utils/types/Product";
 
 type UserInput = {
   priceOrder: number;
@@ -6,7 +7,7 @@ type UserInput = {
   discount: [number, number][];
 };
 
-const useSearchFilter = (products: any) => {
+const useSearchFilter = (products: Product[]) => {
   const [userInput, setUserInput] = useState<UserInput>({
     priceOrder: 0,
     priceRange: [],
@@ -60,9 +61,8 @@ const useSearchFilter = (products: any) => {
     // console.log(filteredProducts);
 
     filteredProducts = filteredProducts?.sort(
-      (a: any, b: any) =>
-        Math.sign(userInput.priceOrder) *
-        (Number(a.price.slice(1)) - Number(b.price.slice(1)))
+      (a: Product, b: Product) =>
+        Math.sign(userInput.priceOrder) * (a.price - b.price)
     );
     // console.log(filteredProducts);
 
@@ -71,9 +71,7 @@ const useSearchFilter = (products: any) => {
       let minPrice = Math.min(...userInput.priceRange.flat(1));
       // console.log(minPrice, maxPrice);
       filteredProducts = filteredProducts?.filter(
-        (item: any) =>
-          Number(item.price.slice(1)) >= minPrice &&
-          Number(item.price.slice(1) <= maxPrice)
+        (item: Product) => item.price >= minPrice && item.price <= maxPrice
       );
       // console.log(filteredProducts);
     }
@@ -82,10 +80,12 @@ const useSearchFilter = (products: any) => {
       let maxDiscount = Math.max(...userInput.discount.flat(1));
       let minDiscount = Math.min(...userInput.discount.flat(1));
 
-      filteredProducts = filteredProducts?.filter(
-        (item: any) =>
-          item.discount >= minDiscount && item.discount <= maxDiscount
-      );
+      filteredProducts = filteredProducts?.filter((item: Product) => {
+        if (!item.discount) {
+          return;
+        }
+        return item.discount >= minDiscount && item.discount <= maxDiscount;
+      });
       // console.log(filteredProducts);
     }
 

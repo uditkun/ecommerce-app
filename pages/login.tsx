@@ -11,6 +11,7 @@ import {
 import { useRouter } from "next/router";
 import { validateForm } from "../utils/handleForms";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
+import useAuth from "../hooks/useAuth";
 
 function LogIn() {
   const [formData, setFormData] = useState<{ email: string; password: string }>(
@@ -19,6 +20,7 @@ function LogIn() {
   const router = useRouter();
   const { auth } = useGlobalState();
   const dispatch = useDispatchGlobalState();
+  const { getAuthInfo } = useAuth();
 
   if (auth) {
     router.push("/dashboard");
@@ -29,20 +31,22 @@ function LogIn() {
     customData?: { email: string; password: string }
   ) => {
     e.preventDefault();
-    let data = formData;
-    if (customData) {
-      data = customData;
-    }
-    if (validateForm(data)) {
-      const authUserData = await logIn(data);
-      if (authUserData) {
-        dispatch({ type: ACTIONS.AUTH, payload: authUserData });
-        router.back();
-      }
-    } else {
-      console.log("Email or password not in correct format");
-    }
-    return;
+    // let data = formData;
+    // if (customData) {
+    //   data = customData;
+    // }
+    // console.log(data);
+    // if (validateForm(data)) {
+    //   // const authUserData = await logIn(data);
+    //   // if (authUserData) {
+    //   //   dispatch({ type: ACTIONS.AUTH, payload: authUserData });
+    //   //   router.back();
+    //   // }
+    //   getAuthInfo(data);
+    // } else {
+    //   console.log("Email or password not in correct format");
+    // }
+    // return;
     // const values = getFormValues(formData.current);
     // // console.log(values);
     // const authInfo = await logIn(values);
@@ -106,7 +110,7 @@ function LogIn() {
               placeholder="Password"
               required
               onChange={(e) => {
-                setFormData({ ...formData, email: e.target.value });
+                setFormData({ ...formData, password: e.target.value });
               }}
             />
             <button

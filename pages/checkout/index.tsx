@@ -18,10 +18,7 @@ function Checkout() {
   const date = new Date();
   useEffect(() => {
     setCheckedOutItems(
-      auth?.checkedOutItems?.sort(
-        (a: any, b: any) =>
-          Number(a.price?.slice(1)) - Number(b.price?.slice(1))
-      )
+      auth?.checkedOutItems?.sort((a: any, b: any) => a.price - b.price)
     );
   }, [auth]);
 
@@ -41,9 +38,7 @@ function Checkout() {
     const updatedNewCheckout = [
       ...newCheckoutItems,
       { ...newProduct, quantity: newProduct.quantity + num },
-    ].sort(
-      (a: any, b: any) => Number(a.price.slice(1)) - Number(b.price.slice(1))
-    );
+    ].sort((a: any, b: any) => a.price - b.price);
     setCheckedOutItems(updatedNewCheckout);
     dispatch({ type: ACTIONS.UPDATE_CHECKOUT, payload: updatedNewCheckout });
   };
@@ -54,11 +49,7 @@ function Checkout() {
         (
           parseFloat(total) +
           parseFloat(
-            String(
-              Number(next?.price?.slice(1)) *
-                next?.quantity *
-                (1 - next?.discount / 100)
-            )
+            String(next?.price * next?.quantity * (1 - next?.discount / 100))
           )
         ).toFixed(2),
       0
@@ -120,11 +111,12 @@ function Checkout() {
                     <p className="flex w-full justify-between mt-2">
                       <span>Total</span>
                       <span className="font-semibold">
-                        {(
-                          (1 - product?.discount / 100) *
-                          product?.quantity *
-                          Number(product?.price?.slice(1))
-                        ).toFixed(2)}
+                        {"$" +
+                          (
+                            (1 - product?.discount / 100) *
+                            product?.quantity *
+                            product?.price
+                          ).toFixed(2)}
                       </span>
                     </p>
                   </div>

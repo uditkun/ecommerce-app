@@ -1,0 +1,55 @@
+import { Product } from "./types/Product";
+const productsList: Product[] = [
+  {
+    id: 2,
+    companyName: "DEF",
+    name: "Product 2",
+    price: 20,
+    offers: 2,
+    discount: 20,
+    imgSrc: "/placeholder.png",
+    rating: 4.3,
+  },
+  {
+    id: 1,
+    companyName: "ABC",
+    name: "Product 1",
+    price: 10,
+    offers: 1,
+    imgSrc: "/placeholder.png",
+    discount: 10,
+    rating: 4.13,
+  },
+  {
+    id: 3,
+    companyName: "GHI",
+    name: "Product 3",
+    price: 30,
+    offers: 1,
+    imgSrc: "/placeholder.png",
+    discount: 25,
+    rating: 4.2,
+  },
+  {
+    id: 4,
+    companyName: "JKL",
+    name: "Product 4",
+    price: 40,
+    offers: 1,
+    imgSrc: "/placeholder.png",
+    rating: 4.3,
+    discount: 15,
+  },
+  {
+    id: 5,
+    companyName: "MNO",
+    name: "Product 5",
+    price: 50,
+    offers: 2,
+    imgSrc: "/placeholder.png",
+    rating: 4.0,
+    discount: 30,
+  },
+];
+
+export default productsList;

@@ -4,6 +4,8 @@ import useProductSearch from "../../hooks/useProductSearch";
 import { useGlobalState } from "../../components/Context";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { getHref } from "../../utils/handleForms";
+import { Product } from "../../utils/types/Product";
 
 function Wishlist() {
   const router = useRouter();
@@ -21,8 +23,8 @@ function Wishlist() {
     setSearchValue(" ");
   }, [auth, router, setSearchValue]);
 
-  const products: any[] = auth?.wishlist?.map((item: any) => {
-    return data?.find((product: any) => product.id === item.id);
+  const products: Product[] = auth?.wishlist?.map((item: Product) => {
+    return data?.find((product: Product) => product.id === item.id);
   });
 
   return (
@@ -30,8 +32,8 @@ function Wishlist() {
       <h3 className="text-xl font-bold mb-4">Wishlist</h3>
       <div className="grid gap-6 grid-cols-auto-1x lg:grid-cols-auto-2x">
         {isFetched && products?.length ? (
-          products?.map((card: any) => (
-            <Link href={"/products/" + card.href} key={card.id}>
+          products?.map((card: Product) => (
+            <Link href={"/products/" + getHref(card.name)} key={card.id}>
               <ProductCard details={card} />
             </Link>
           ))

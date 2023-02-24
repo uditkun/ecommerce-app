@@ -1,7 +1,11 @@
+import { QueryDocumentSnapshot } from "firebase/firestore";
 import Link from "next/link";
+import { QueriesResults, Query } from "react-query";
+import { QueryState } from "react-query/types/core/query";
+import { getHref } from "../utils/handleForms";
 import ProductCard from "./ProductCard";
 
-const ProductsList = ({ queryData }: any) => {
+const ProductsList = ({ queryData }: { queryData: any }) => {
   const { data: products, isLoading, isError } = queryData;
 
   if (isLoading) {
@@ -14,7 +18,7 @@ const ProductsList = ({ queryData }: any) => {
     <>
       {products?.length ? (
         products.map((product: any) => (
-          <Link href={"/products/" + product.href} key={product.id}>
+          <Link href={"/products/" + getHref(product.name)} key={product.id}>
             <ProductCard details={product} />
           </Link>
         ))

@@ -1,9 +1,10 @@
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
+import { Product } from "../utils/types/Product";
 import WishlistHeart from "./WishlistHeart";
 
-const ProductCard = ({ details }: any) => {
+const ProductCard = ({ details }: { details: Product }) => {
   return (
     <div className="flex flex-col relative">
       <WishlistHeart id={details.id} />
@@ -25,7 +26,7 @@ const ProductCard = ({ details }: any) => {
           <span className="text-lg overflow-hidden whitespace-nowrap text-ellipsis max-w-[200px]">
             {details.name}
           </span>
-          <span className="text-lg mr-2">{details.price}</span>
+          <span className="text-lg mr-2">${details.price}</span>
         </div>
       </div>
       <span>Free delivery</span>

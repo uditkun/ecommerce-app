@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { useRef } from "react";
 import useMenuToggle from "../hooks/useMenuToggle";
 import useProductSearch from "../hooks/useProductSearch";
+import { getHref } from "../utils/handleForms";
 
 const SearchBar = () => {
   const {
@@ -61,7 +62,9 @@ const SearchBar = () => {
                 <li
                   key={index}
                   className="text-black py-2 pl-3 cursor-pointer block"
-                  onClick={() => router.push(`/products/${displayData.href}`)}
+                  onClick={() =>
+                    router.push(`/products/${getHref(displayData.name)}`)
+                  }
                 >
                   {displayData.name}
                 </li>

@@ -5,6 +5,7 @@ import {
   useDispatchGlobalState,
   useGlobalState,
 } from "../components/Context";
+import { Product } from "../utils/types/Product";
 const useWishList = () => {
   const { auth } = useGlobalState();
   const dispatch = useDispatchGlobalState();
@@ -19,7 +20,7 @@ const useWishList = () => {
   }, [setHeartWish, auth]);
 
   const isOnWishlist = (id: number): boolean => {
-    return heartWish.map((item: any) => item.id).includes(id);
+    return heartWish.map((item: Product) => item.id).includes(id);
   };
 
   const isOnWishlistCSS = (id: number, customCSS?: string): string => {
