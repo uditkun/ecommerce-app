@@ -4,7 +4,7 @@ import {
   useDispatchGlobalState,
   ACTIONS,
 } from "../../components/Context";
-import useIsAuthDone from "../../hooks/useIsAuthDone";
+import usePageAuth from "../../hooks/usePageAuth";
 import Card from "../../components/Card";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
@@ -20,7 +20,7 @@ const Orders = () => {
   useEffect(() => {
     auth.orders && setOrderedProducts([...auth.orders]);
   }, [auth.orders]);
-  useIsAuthDone();
+  usePageAuth();
 
   return (
     <section className="p-4">

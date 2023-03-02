@@ -1,6 +1,3 @@
-import { FormEvent, RefObject } from "react";
-import { getLocalProducts } from "./getLocalProducts";
-
 // const getFormValues = (currentRef: any) => {
 //   let modifiedData: any = {};
 //   Object.keys(currentRef).forEach((formKey: any) => {

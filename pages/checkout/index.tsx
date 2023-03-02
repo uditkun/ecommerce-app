@@ -8,19 +8,19 @@ import {
   useDispatchGlobalState,
   useGlobalState,
 } from "../../components/Context";
-import useIsAuthDone from "../../hooks/useIsAuthDone";
+import usePageAuth from "../../hooks/usePageAuth";
 
 function Checkout() {
-  useIsAuthDone();
-  const { auth } = useGlobalState();
+  usePageAuth();
+  const { auth, user } = useGlobalState();
   const dispatch = useDispatchGlobalState();
   const [checkedOutItems, setCheckedOutItems] = useState<any>([]);
   const date = new Date();
   useEffect(() => {
     setCheckedOutItems(
-      auth?.checkedOutItems?.sort((a: any, b: any) => a.price - b.price)
+      user?.checkedOutItems?.sort((a: any, b: any) => a.price - b.price)
     );
-  }, [auth]);
+  }, [user]);
 
   const updateCheckedOutItems = (product: any, num: number) => {
     const newProduct = checkedOutItems.find(

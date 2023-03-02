@@ -1,8 +1,8 @@
 import React from "react";
-import useIsAuthDone from "../../hooks/useIsAuthDone";
+import usePageAuth from "../../hooks/usePageAuth";
 
 function Success() {
-  useIsAuthDone();
+  usePageAuth();
   return <div>Yay! Your order is on its way!</div>;
 }
 

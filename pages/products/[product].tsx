@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { getLocalProducts } from "../../utils/getLocalProducts";
 import { useRouter } from "next/router";
 import {
   useGlobalState,
@@ -9,6 +8,9 @@ import {
 import WishlistHeart from "../../components/WishlistHeart";
 import { Product } from "../../utils/types/Product";
 import { getHref } from "../../utils/handleForms";
+import productsList from "../../utils/productsList";
+import useCustomFireHooks from "../../hooks/useCustomFireHooks";
+import useWishList from "../../hooks/useWishList";
 
 export const getStaticPaths = () => {
   return {
@@ -17,7 +19,7 @@ export const getStaticPaths = () => {
   };
 };
 
-export const getStaticProps = ({ params }: any) => {
+export const getStaticProps = async ({ params }: any) => {
   // const products = await fetch(
   //   `https://jsonplaceholder.typicode.com/posts/${params.product}`
   // );
@@ -26,8 +28,7 @@ export const getStaticProps = ({ params }: any) => {
   // return {
   //   props: { data },
   // };
-  const products = getLocalProducts();
-  const product = products.filter(
+  const product = productsList.filter(
     (item: Product) => getHref(item.name) === params.product
   )[0];
 
@@ -46,8 +47,12 @@ export const getStaticProps = ({ params }: any) => {
 
 function ProductPage({ product }: any) {
   const router = useRouter();
-  const { cart, auth } = useGlobalState();
+  const {
+    user: { cart: cart },
+  } = useGlobalState();
   const dispatch = useDispatchGlobalState();
+  const { updateUserData } = useCustomFireHooks();
+  const wishlist = useWishList();
 
   if (router.isFallback) {
     return <div>Loading...</div>;
@@ -64,9 +69,10 @@ function ProductPage({ product }: any) {
             height={400}
           />
           <WishlistHeart
-            id={product.id}
+            product={product}
             customCSS="right-2 top-2 p-3"
             size="lg"
+            wishlistHandlers={wishlist}
           />
         </div>
         <div className="flex gap-4 mt-6 max-w-[600px]">
@@ -76,12 +82,19 @@ function ProductPage({ product }: any) {
                 (i: Product) => i?.id === product?.id
               );
               if (isProductInCart) {
-                dispatch({
-                  type: ACTIONS.REMOVE_FROM_CART,
-                  payload: product?.id,
+                console.log("remove from cart");
+                updateUserData({
+                  title: "cart",
+                  operation: "remove",
+                  data: product,
                 });
               } else {
-                dispatch({ type: ACTIONS.ADD_TO_CART, payload: product });
+                console.log("add to cart");
+                updateUserData({
+                  title: "cart",
+                  operation: "add",
+                  data: product,
+                });
               }
             }}
             className="py-3 px-4 bg-orange-400 text-white font-semibold rounded cursor-pointer flex-1"
@@ -92,11 +105,13 @@ function ProductPage({ product }: any) {
           </button>
           <button
             onClick={() => {
-              if (!auth) {
-                router.push("/login");
-                return;
-              }
-              dispatch({ type: ACTIONS.ADD_TO_CHECKOUT, payload: product });
+              const user = updateUserData({
+                title: "checkout",
+                operation: "add",
+                data: { ...product, quantity: 1 },
+              });
+              console.log(user);
+              dispatch({ type: ACTIONS.USER, payload: user });
               router.push("/checkout");
             }}
             className="py-3 px-4 bg-green-500 text-white font-semibold rounded cursor-pointer flex-1"

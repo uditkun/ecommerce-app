@@ -11,10 +11,10 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import { useGlobalState } from "../../components/Context";
-import useIsAuthDone from "../../hooks/useIsAuthDone";
+import usePageAuth from "../../hooks/usePageAuth";
 
 function Dashboard() {
-  useIsAuthDone();
+  usePageAuth();
   const menuList = [
     {
       icon: faBox,

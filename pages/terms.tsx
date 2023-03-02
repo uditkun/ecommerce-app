@@ -33,9 +33,10 @@ const Terms = () => {
         sed.
       </p>
       <p className="mt-4 font-bold">
-        This web app does not collect any data, it uses browser's localstorage.
-        Avoid storing any personal info in this app. And make sure to clear
-        localStorage after you are done with the demo.
+        Please do not input any sensitive information when interacting with the
+        app. This app is built for demo purposes.
+        <br /> Feel free to contact me on my mail{" "}
+        <a href="mailto:contactuditdev@gmail.com">contactuditdev@gmail.com</a>.
       </p>
     </div>
   );

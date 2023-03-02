@@ -1,40 +1,30 @@
-import React, { useEffect } from "react";
+import React from "react";
 import ProductCard from "../../components/ProductCard";
-import useProductSearch from "../../hooks/useProductSearch";
 import { useGlobalState } from "../../components/Context";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { getHref } from "../../utils/handleForms";
 import { Product } from "../../utils/types/Product";
+import usePageAuth from "../../hooks/usePageAuth";
+import useWishList from "../../hooks/useWishList";
 
 function Wishlist() {
-  const router = useRouter();
+  usePageAuth();
   const {
-    queryData: { data, isFetched },
-    setSearchValue,
-  } = useProductSearch();
-
-  const { auth } = useGlobalState();
-
-  useEffect(() => {
-    if (!auth) {
-      router.push("/login");
-    }
-    setSearchValue(" ");
-  }, [auth, router, setSearchValue]);
-
-  const products: Product[] = auth?.wishlist?.map((item: Product) => {
-    return data?.find((product: Product) => product.id === item.id);
-  });
+    user: { wishlist: wishlist },
+  } = useGlobalState();
+  const wishlistFunctions = useWishList();
 
   return (
     <section className="p-8">
       <h3 className="text-xl font-bold mb-4">Wishlist</h3>
       <div className="grid gap-6 grid-cols-auto-1x lg:grid-cols-auto-2x">
-        {isFetched && products?.length ? (
-          products?.map((card: Product) => (
+        {wishlist?.length ? (
+          wishlist?.map((card: Product) => (
             <Link href={"/products/" + getHref(card.name)} key={card.id}>
-              <ProductCard details={card} />
+              <ProductCard
+                details={card}
+                wishlistHandlers={wishlistFunctions}
+              />
             </Link>
           ))
         ) : (

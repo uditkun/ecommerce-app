@@ -1,8 +1,8 @@
 import React from "react";
-import useIsAuthDone from "../../hooks/useIsAuthDone";
+import usePageAuth from "../../hooks/usePageAuth";
 
 function Payment() {
-  useIsAuthDone();
+  usePageAuth();
   return <div>Payment</div>;
 }
 

@@ -9,16 +9,17 @@ import {
   useDispatchGlobalState,
   ACTIONS,
 } from "../components/Context";
+import useCustomFireHooks from "../hooks/useCustomFireHooks";
 import { CartProduct, Product } from "../utils/types/Product";
 
 function Cart() {
-  const [cartProducts, setCartProducts] = useState([]);
   const router = useRouter();
-  const { cart, auth } = useGlobalState();
+  const {
+    user: { cart: cartProducts },
+    auth,
+  } = useGlobalState();
   const dispatch = useDispatchGlobalState();
-  useEffect(() => {
-    setCartProducts(cart);
-  }, [cart]);
+  const { updateUserData } = useCustomFireHooks();
 
   const getCheckoutItems = () => {
     const initialCheckoutItems = [
@@ -51,7 +52,7 @@ function Cart() {
     <section className="p-4">
       <h2 className="text-2xl font-semibold pb-4 text-center">Cart Items</h2>
       <ul className="flex gap-4 flex-wrap justify-center items-center relative mx-auto max-w-[1200px] px-5">
-        {cartProducts.length ? (
+        {cartProducts?.length ? (
           cartProducts?.map((product: CartProduct) => {
             return (
               <li
@@ -69,7 +70,7 @@ function Cart() {
                         <FontAwesomeIcon icon={faStar} className="mr-1" />
                         {product.rating}
                       </strong>
-                      <strong>{product.price}</strong>
+                      <strong>${product.price}</strong>
                     </div>
                   </div>
                   <div className="flex gap-2 justify-center mt-2">
@@ -77,9 +78,10 @@ function Cart() {
                       type="button"
                       className="py-2 px-4 bg-red-600 text-white rounded flex-1 text-center max-w-[150px]"
                       onClick={() => {
-                        dispatch({
-                          type: ACTIONS.REMOVE_FROM_CART,
-                          payload: product.id,
+                        updateUserData({
+                          title: "cart",
+                          operation: "remove",
+                          data: product,
                         });
                       }}
                     >
@@ -87,13 +89,14 @@ function Cart() {
                     </button>
                     <button
                       onClick={() => {
-                        if (!auth) {
+                        if (!Object.keys(auth).length) {
                           router.push("/login");
                           return;
                         }
-                        dispatch({
-                          type: ACTIONS.ADD_TO_CHECKOUT,
-                          payload: product,
+                        updateUserData({
+                          title: "checkout",
+                          operation: "add",
+                          data: { ...product, quantity: 1 },
                         });
                         router.push("/checkout");
                       }}
@@ -118,7 +121,7 @@ function Cart() {
           </div>
         )}
       </ul>
-      {cartProducts.length ? (
+      {cartProducts?.length ? (
         <button
           className="py-2 px-4 bg-yellow-500 max-w-xs mx-auto w-full text-gray-700 font-semibold block mt-12 rounded"
           onClick={() => {

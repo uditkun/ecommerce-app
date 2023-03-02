@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
-import { CURRENCY, MIN_AMOUNT, MAX_AMOUNT } from "../../../../utils/config";
-import { formatAmountForStripe } from "../../../../utils/stripe-helpers";
+import { CURRENCY, MIN_AMOUNT, MAX_AMOUNT } from "../../../utils/config";
+import { formatAmountForStripe } from "../../../utils/stripe-helpers";
 
 import Stripe from "stripe";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
