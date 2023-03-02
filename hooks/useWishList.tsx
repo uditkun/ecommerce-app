@@ -1,54 +1,44 @@
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import {
-  ACTIONS,
-  useDispatchGlobalState,
-  useGlobalState,
-} from "../components/Context";
+import { useGlobalState } from "../components/Context";
 import { Product } from "../utils/types/Product";
+import useCustomFireHooks from "./useCustomFireHooks";
+
 const useWishList = () => {
-  const { auth } = useGlobalState();
-  const dispatch = useDispatchGlobalState();
+  const {
+    auth,
+    user: { wishlist: wishlist },
+  } = useGlobalState();
   const router = useRouter();
-
-  const [heartWish, setHeartWish] = useState([]);
-
-  useEffect(() => {
-    if (auth?.wishlist) {
-      setHeartWish(auth.wishlist);
-    }
-  }, [setHeartWish, auth]);
+  const { updateUserData } = useCustomFireHooks();
 
   const isOnWishlist = (id: number): boolean => {
-    return heartWish.map((item: Product) => item.id).includes(id);
+    return Boolean(wishlist?.find((item: Product) => item.id === id));
   };
 
   const isOnWishlistCSS = (id: number, customCSS?: string): string => {
     return isOnWishlist(id) ? "wishlist wishlist_active" : "wishlist";
   };
 
-  const removeFromWishlist = (id: number) => {
-    dispatch({ type: ACTIONS.REMOVE_FROM_WISHLIST, payload: id });
+  const removeFromWishlist = (product: Product) => {
+    updateUserData({ title: "wishlist", operation: "remove", data: product });
   };
-  const addToWishlist = (id: number) => {
-    dispatch({ type: ACTIONS.ADD_TO_WISHLIST, payload: id });
+  const addToWishlist = (product: Product) => {
+    updateUserData({ title: "wishlist", operation: "add", data: product });
   };
-  const showWishlistHeart = (id: number) => {
-    if (!auth) {
+  const showWishlistHeart = (product: Product) => {
+    if (!Object.keys(auth).length) {
       router.push("/login");
       console.log("Please login first");
       return;
     }
-    isOnWishlist(id)
-      ? dispatch({ type: ACTIONS.REMOVE_FROM_WISHLIST, payload: id })
-      : dispatch({ type: ACTIONS.ADD_TO_WISHLIST, payload: id });
+    isOnWishlist(product.id)
+      ? removeFromWishlist(product)
+      : addToWishlist(product);
   };
 
   return {
     isOnWishlist,
     isOnWishlistCSS,
-    removeFromWishlist,
-    addToWishlist,
     showWishlistHeart,
   };
 };
