@@ -17,13 +17,8 @@ import { getHref } from "../utils/handleForms";
 
 function Header() {
   const menuIcon = useRef<HTMLLIElement>(null);
-  const [trackAuth, setTrackAuth] = useState("");
-  const globalContext = useGlobalState();
+  const { auth } = useGlobalState();
   const logOut = useLogOut();
-
-  useEffect(() => {
-    setTrackAuth(globalContext.auth);
-  }, [globalContext.auth]);
 
   const menuItems = [
     {
@@ -44,6 +39,7 @@ function Header() {
   ];
 
   useMenuToggle(menuIcon, "menu");
+  // console.log(Object.keys(auth).length);
 
   return (
     <nav className="sticky top-0 bg-gray-800 z-50">
@@ -62,7 +58,7 @@ function Header() {
               <FontAwesomeIcon icon={faShoppingCart} size="lg" />
             </Link>
           </li>
-          {trackAuth ? (
+          {Object.keys(auth).length ? (
             <li className="p-2 cursor-pointer" ref={menuIcon}>
               <FontAwesomeIcon icon={faCircleUser} size="xl" />
             </li>
@@ -86,7 +82,7 @@ function Header() {
             return (
               <li key={li.name}>
                 <Link
-                  href={getHref(li.name)}
+                  href={li.href}
                   className="py-3 px-6 rounded-sm hover:bg-gray-300 cursor-pointer block"
                 >
                   <FontAwesomeIcon icon={li.icon} className="mr-2" /> {li.name}
@@ -95,7 +91,7 @@ function Header() {
             );
           })}
 
-          {trackAuth ? (
+          {Object.keys(auth).length ? (
             <li
               onClick={() => logOut()}
               className="py-3 px-6 rounded-sm hover:bg-gray-300 cursor-pointer"

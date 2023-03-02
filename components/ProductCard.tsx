@@ -4,10 +4,10 @@ import Image from "next/image";
 import { Product } from "../utils/types/Product";
 import WishlistHeart from "./WishlistHeart";
 
-const ProductCard = ({ details }: { details: Product }) => {
+const ProductCard = ({ details, wishlistHandlers }: any) => {
   return (
     <div className="flex flex-col relative">
-      <WishlistHeart id={details.id} />
+      <WishlistHeart product={details} wishlistHandlers={wishlistHandlers} />
       <figure>
         <Image
           className="rounded"
