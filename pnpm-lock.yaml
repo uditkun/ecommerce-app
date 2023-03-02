@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@firebase/firestore-types': ^2.5.1
   '@fortawesome/fontawesome-svg-core': ^6.3.0
   '@fortawesome/free-brands-svg-icons': ^6.3.0
   '@fortawesome/free-regular-svg-icons': ^6.3.0
@@ -13,7 +14,6 @@ specifiers:
   '@types/react': 18.0.27
   '@types/react-dom': 18.0.10
   autoprefixer: ^10.4.13
-  crypto-js: ^4.1.1
   eslint: 8.33.0
   eslint-config-next: 13.1.6
   firebase: ^9.17.1
@@ -27,6 +27,7 @@ specifiers:
   typescript: 4.9.5
 
 dependencies:
+  '@firebase/firestore-types': 2.5.1
   '@fortawesome/fontawesome-svg-core': 6.3.0
   '@fortawesome/free-brands-svg-icons': 6.3.0
   '@fortawesome/free-regular-svg-icons': 6.3.0
@@ -37,7 +38,6 @@ dependencies:
   '@types/node': 18.13.0
   '@types/react': 18.0.27
   '@types/react-dom': 18.0.10
-  crypto-js: 4.1.1
   eslint: 8.33.0
   eslint-config-next: 13.1.6_4vsywjlpuriuw3tl5oq6zy5a64
   firebase: 9.17.1
@@ -270,6 +270,13 @@ packages:
       - '@firebase/app'
       - '@firebase/app-types'
       - encoding
+    dev: false
+
+  /@firebase/firestore-types/2.5.1:
+    resolution: {integrity: sha512-xG0CA6EMfYo8YeUxC8FeDzf6W3FX1cLlcAGBYV6Cku12sZRI81oWcu61RSKM66K6kUENP+78Qm8mvroBcm1whw==}
+    peerDependencies:
+      '@firebase/app-types': 0.x
+      '@firebase/util': 1.x
     dev: false
 
   /@firebase/firestore-types/2.5.1_rls6ojzmqtv4do6kouxcb5gfn4:
@@ -1238,10 +1245,6 @@ packages:
       path-key: 3.1.1
       shebang-command: 2.0.0
       which: 2.0.2
-    dev: false
-
-  /crypto-js/4.1.1:
-    resolution: {integrity: sha512-o2JlM7ydqd3Qk9CA0L4NL6mTzU2sdx96a+oOfPu8Mkl/PK51vSyoi8/rQ8NknZtk44vq15lmhAj9CIAGwgeWKw==}
     dev: false
 
   /cssesc/3.0.0:
