@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGoogle, faFacebook } from "@fortawesome/free-brands-svg-icons";
+import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { useRef } from "react";
-// import { validateForm } from "../utils/handleForms";
 import useCustomFireHooks from "../hooks/useCustomFireHooks";
 
 function SignUp() {

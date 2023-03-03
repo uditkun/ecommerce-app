@@ -3,11 +3,10 @@ import { useRouter } from "next/router";
 import {
   useGlobalState,
   useDispatchGlobalState,
-  ACTIONS,
 } from "../../components/Context";
 import WishlistHeart from "../../components/WishlistHeart";
 import { Product } from "../../utils/types/Product";
-import { getHref } from "../../utils/handleForms";
+import { getHref } from "../../utils/helperFunctions";
 import productsList from "../../utils/productsList";
 import useCustomFireHooks from "../../hooks/useCustomFireHooks";
 import useWishList from "../../hooks/useWishList";
@@ -20,14 +19,6 @@ export const getStaticPaths = () => {
 };
 
 export const getStaticProps = async ({ params }: any) => {
-  // const products = await fetch(
-  //   `https://jsonplaceholder.typicode.com/posts/${params.product}`
-  // );
-  // const data = await products.json();
-  // console.log(data);
-  // return {
-  //   props: { data },
-  // };
   const product = productsList.filter(
     (item: Product) => getHref(item.name) === params.product
   )[0];
@@ -51,7 +42,7 @@ function ProductPage({ product }: any) {
     user: { cart: cart },
   } = useGlobalState();
   const dispatch = useDispatchGlobalState();
-  const { updateUserData } = useCustomFireHooks();
+  const { updateUserArrayData } = useCustomFireHooks();
   const wishlist = useWishList();
 
   if (router.isFallback) {
@@ -82,19 +73,19 @@ function ProductPage({ product }: any) {
                 (i: Product) => i?.id === product?.id
               );
               if (isProductInCart) {
-                console.log("remove from cart");
-                updateUserData({
+                updateUserArrayData({
                   title: "cart",
                   operation: "remove",
                   data: product,
                 });
+                console.log("removed from cart");
               } else {
-                console.log("add to cart");
-                updateUserData({
+                updateUserArrayData({
                   title: "cart",
                   operation: "add",
                   data: product,
                 });
+                console.log("added to cart");
               }
             }}
             className="py-3 px-4 bg-orange-400 text-white font-semibold rounded cursor-pointer flex-1"
@@ -105,13 +96,11 @@ function ProductPage({ product }: any) {
           </button>
           <button
             onClick={() => {
-              const user = updateUserData({
+              updateUserArrayData({
                 title: "checkout",
                 operation: "add",
                 data: { ...product, quantity: 1 },
               });
-              console.log(user);
-              dispatch({ type: ACTIONS.USER, payload: user });
               router.push("/checkout");
             }}
             className="py-3 px-4 bg-green-500 text-white font-semibold rounded cursor-pointer flex-1"

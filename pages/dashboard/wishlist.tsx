@@ -2,7 +2,7 @@ import React from "react";
 import ProductCard from "../../components/ProductCard";
 import { useGlobalState } from "../../components/Context";
 import Link from "next/link";
-import { getHref } from "../../utils/handleForms";
+import { getHref } from "../../utils/helperFunctions";
 import { Product } from "../../utils/types/Product";
 import usePageAuth from "../../hooks/usePageAuth";
 import useWishList from "../../hooks/useWishList";

@@ -29,7 +29,6 @@ function Checkout() {
     const newCheckoutItems = checkedOutItems.filter(
       (item: any) => product.id !== item.id
     );
-    // console.log(newCheckoutItems);
     if (product.quantity + num <= 0) {
       setCheckedOutItems(newCheckoutItems);
       dispatch({ type: ACTIONS.UPDATE_CHECKOUT, payload: newCheckoutItems });

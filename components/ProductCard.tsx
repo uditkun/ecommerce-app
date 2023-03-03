@@ -1,10 +1,14 @@
-import { faHeart } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import { Product } from "../utils/types/Product";
 import WishlistHeart from "./WishlistHeart";
 
-const ProductCard = ({ details, wishlistHandlers }: any) => {
+const ProductCard = ({
+  details,
+  wishlistHandlers,
+}: {
+  details: Product;
+  wishlistHandlers: any;
+}) => {
   return (
     <div className="flex flex-col relative">
       <WishlistHeart product={details} wishlistHandlers={wishlistHandlers} />

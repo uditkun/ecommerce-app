@@ -2,15 +2,11 @@ import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Card from "../components/Card";
-import {
-  useGlobalState,
-  useDispatchGlobalState,
-  ACTIONS,
-} from "../components/Context";
+import { useGlobalState, useDispatchGlobalState } from "../components/Context";
 import useCustomFireHooks from "../hooks/useCustomFireHooks";
-import { CartProduct, Product } from "../utils/types/Product";
+import { CartProduct } from "../utils/types/Product";
 
 function Cart() {
   const router = useRouter();
@@ -19,7 +15,7 @@ function Cart() {
     auth,
   } = useGlobalState();
   const dispatch = useDispatchGlobalState();
-  const { updateUserData } = useCustomFireHooks();
+  const { updateUserArrayData } = useCustomFireHooks();
 
   const getCheckoutItems = () => {
     const initialCheckoutItems = [
@@ -78,7 +74,7 @@ function Cart() {
                       type="button"
                       className="py-2 px-4 bg-red-600 text-white rounded flex-1 text-center max-w-[150px]"
                       onClick={() => {
-                        updateUserData({
+                        updateUserArrayData({
                           title: "cart",
                           operation: "remove",
                           data: product,
@@ -93,7 +89,7 @@ function Cart() {
                           router.push("/login");
                           return;
                         }
-                        updateUserData({
+                        updateUserArrayData({
                           title: "checkout",
                           operation: "add",
                           data: { ...product, quantity: 1 },
@@ -129,10 +125,6 @@ function Cart() {
               router.push("/login");
               return;
             }
-            dispatch({
-              type: ACTIONS.UPDATE_CHECKOUT,
-              payload: getCheckoutItems(),
-            });
             router.push("/checkout");
           }}
         >

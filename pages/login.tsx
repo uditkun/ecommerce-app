@@ -1,9 +1,8 @@
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGoogle, faFacebook } from "@fortawesome/free-brands-svg-icons";
-import { useEffect, useState } from "react";
+import { faGoogle } from "@fortawesome/free-brands-svg-icons";
+import { useState } from "react";
 import { useGlobalState } from "../components/Context";
-import { useRouter } from "next/router";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import useCustomFireHooks from "../hooks/useCustomFireHooks";
 
@@ -13,14 +12,8 @@ function LogIn() {
   );
 
   const { auth, user } = useGlobalState();
-  const { login, usingGoogleAuth, anyonmousAuth } = useCustomFireHooks();
-
-  // useEffect(() => {
-  //   if (Object.keys(auth).length) {
-  //     console.log(Object.keys(auth).length);
-  //     router.push("/");
-  //   }
-  // }, [auth, router]);
+  const { login, usingGoogleAuth, anyonmousAuth, forgotPassword } =
+    useCustomFireHooks();
 
   const authLogin = async (e: any) => {
     e.preventDefault();
@@ -86,6 +79,7 @@ function LogIn() {
                   <Link
                     href="#"
                     className="hover:underline hover:text-orange-500"
+                    onClick={() => forgotPassword()}
                   >
                     Forgot Password
                   </Link>

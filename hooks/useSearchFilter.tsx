@@ -13,7 +13,6 @@ const useSearchFilter = (products: Product[]) => {
     priceRange: [],
     discount: [],
   });
-  console.log(products);
 
   const onChangePriceSort = (e: any, priceOrder: number) => {
     if (e.target.checked) {
@@ -58,22 +57,19 @@ const useSearchFilter = (products: Product[]) => {
 
   const mainFilter = () => {
     let filteredProducts = products?.slice();
-    // console.log(filteredProducts);
 
     filteredProducts = filteredProducts?.sort(
       (a: Product, b: Product) =>
         Math.sign(userInput.priceOrder) * (a.price - b.price)
     );
-    // console.log(filteredProducts);
 
     if (userInput.priceRange.length) {
       let maxPrice = Math.max(...userInput.priceRange.flat(1));
       let minPrice = Math.min(...userInput.priceRange.flat(1));
-      // console.log(minPrice, maxPrice);
+      //
       filteredProducts = filteredProducts?.filter(
         (item: Product) => item.price >= minPrice && item.price <= maxPrice
       );
-      // console.log(filteredProducts);
     }
 
     if (userInput.discount.length) {
@@ -86,7 +82,6 @@ const useSearchFilter = (products: Product[]) => {
         }
         return item.discount >= minDiscount && item.discount <= maxDiscount;
       });
-      // console.log(filteredProducts);
     }
 
     return filteredProducts;

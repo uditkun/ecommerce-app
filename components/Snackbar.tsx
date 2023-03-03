@@ -1,13 +1,10 @@
-const Snackbar = ({
-  message,
-  customCSS,
-  type,
-}: {
-  message: string;
-  customCSS?: string;
-  type?: string;
-}) => {
-  switch (type) {
+import { useGlobalState } from "./Context";
+const Snackbar = ({ customCSS }: { customCSS?: string }) => {
+  const {
+    snackBar: { snackBar },
+  } = useGlobalState();
+
+  switch (snackBar.type) {
     case "success": {
       return (
         <div
@@ -18,7 +15,7 @@ const Snackbar = ({
               : "absolute top-16 left-1/2 px-4 py-2 max-w-md mx-2 bg-green-700 text-white"
           }
         >
-          {message}
+          {snackBar.message}
         </div>
       );
     }
@@ -32,7 +29,7 @@ const Snackbar = ({
               : "absolute top-16 left-1/2 px-4 py-2 max-w-md mx-2 bg-red-700 text-white"
           }
         >
-          {message}
+          {snackBar.message}
         </div>
       );
     }

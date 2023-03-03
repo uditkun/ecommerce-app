@@ -8,16 +8,15 @@ import {
   faShoppingCart,
 } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import useMenuToggle from "../hooks/useMenuToggle";
 import { useGlobalState } from "./Context";
 import useLogOut from "../hooks/useLogOut";
 import SearchBar from "./SearchBar";
-import { getHref } from "../utils/handleForms";
 
 function Header() {
   const menuIcon = useRef<HTMLLIElement>(null);
-  const { auth } = useGlobalState();
+  const { auth: globalAuth } = useGlobalState();
   const logOut = useLogOut();
 
   const menuItems = [
@@ -39,7 +38,6 @@ function Header() {
   ];
 
   useMenuToggle(menuIcon, "menu");
-  // console.log(Object.keys(auth).length);
 
   return (
     <nav className="sticky top-0 bg-gray-800 z-50">
@@ -58,7 +56,7 @@ function Header() {
               <FontAwesomeIcon icon={faShoppingCart} size="lg" />
             </Link>
           </li>
-          {Object.keys(auth).length ? (
+          {Object.keys(globalAuth).length ? (
             <li className="p-2 cursor-pointer" ref={menuIcon}>
               <FontAwesomeIcon icon={faCircleUser} size="xl" />
             </li>
@@ -91,7 +89,7 @@ function Header() {
             );
           })}
 
-          {Object.keys(auth).length ? (
+          {Object.keys(globalAuth).length ? (
             <li
               onClick={() => logOut()}
               className="py-3 px-6 rounded-sm hover:bg-gray-300 cursor-pointer"

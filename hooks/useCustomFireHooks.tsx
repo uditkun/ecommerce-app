@@ -1,14 +1,14 @@
 import { auth, db, provider } from "../utils/firebase";
 import {
-  browserLocalPersistence,
   createUserWithEmailAndPassword,
   onAuthStateChanged,
-  setPersistence,
   signInWithEmailAndPassword,
   signInWithPopup,
   fetchSignInMethodsForEmail,
   linkWithCredential,
   signInAnonymously,
+  updateProfile,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import {
   ACTIONS,
@@ -26,7 +26,7 @@ import {
 } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { CartProduct, Product } from "../utils/types/Product";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 const useCustomFireHooks = () => {
   const dispatch = useDispatchGlobalState();
@@ -38,13 +38,10 @@ const useCustomFireHooks = () => {
     if (globalState.auth.uid) {
       const userRef = doc(db, "users", auth.currentUser!.uid);
       unSubscribe = onSnapshot(userRef, (snap) => {
-        console.log(snap.data());
         dispatch({ type: ACTIONS.USER, payload: snap.data() });
-        console.log("run snapshot");
       });
     }
     return () => {
-      console.log("unsub snapshot");
       return unSubscribe();
     };
   }, [dispatch, globalState.auth.uid]);
@@ -52,16 +49,17 @@ const useCustomFireHooks = () => {
   const login = async (data: { email: string; password: string }) => {
     // seting persistence then sigininwithemailandpassword
     //then updating state using authstatechanged
+
     try {
       await signInWithEmailAndPassword(auth, data.email, data.password);
     } catch (error: any) {
       const errorCode = error.code;
       const errorMessage = error.message;
-      console.log(errorCode, errorMessage);
+      alert(errorCode);
     }
 
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      console.log("useAuth auth set");
+      alert("useAuth auth set");
       if (user) {
         dispatch({ type: ACTIONS.AUTH, payload: user });
         const userData = await getDoc(
@@ -70,7 +68,7 @@ const useCustomFireHooks = () => {
         dispatch({ type: ACTIONS.USER, payload: userData });
         router.push("/");
       } else {
-        console.log("Error, retry login");
+        alert("Error, retry login");
       }
     });
     unsubscribe();
@@ -88,9 +86,10 @@ const useCustomFireHooks = () => {
     //run authstatechanged function
 
     if (!data.agreeToTnC) {
-      console.log("Please agree to the terms to proceed");
+      alert("Please agree to the terms to proceed");
       return;
     }
+
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
@@ -98,6 +97,7 @@ const useCustomFireHooks = () => {
         data.password
       );
       const user = userCredential.user;
+      await updateProfile(user, { displayName: data.name });
       const initialData = {
         id: user.uid,
         name: data.name,
@@ -116,18 +116,18 @@ const useCustomFireHooks = () => {
           dispatch({ type: ACTIONS.USER, payload: initialData });
           router.push("/");
         } else {
-          console.log("Please retry");
+          alert("Please retry");
         }
       });
       unsubscribe();
     } catch (error: any) {
       const errorCode = error.code;
       const errorMessage = error.message;
-      console.log(errorCode, errorMessage);
+      alert(errorCode);
     }
   };
 
-  const updateUserData = async (item: {
+  const updateUserArrayData = async (item: {
     title: string;
     operation: string;
     data: CartProduct | Product;
@@ -136,6 +136,7 @@ const useCustomFireHooks = () => {
       router.push("/login");
       return;
     }
+
     const userRef = doc(db, "users", auth.currentUser!.uid);
 
     if (item.operation === "add") {
@@ -154,19 +155,19 @@ const useCustomFireHooks = () => {
   const usingGoogleAuth = async () => {
     await signInWithPopup(auth, provider)
       .then(async (userCredential) => {
+        //for both login and signup
         const user = userCredential.user;
         const isUserPresent = await getDoc(doc(db, "users", user.uid)).then(
           (res) => res.data()
         );
         if (isUserPresent) {
           const unsubscribe = onAuthStateChanged(auth, async (user) => {
-            console.log("useAuth auth set");
             if (user) {
               dispatch({ type: ACTIONS.AUTH, payload: user });
               dispatch({ type: ACTIONS.USER, payload: isUserPresent });
               router.push("/");
             } else {
-              console.log("Error, retry login");
+              alert("Error, retry login");
             }
           });
           unsubscribe();
@@ -189,7 +190,7 @@ const useCustomFireHooks = () => {
               dispatch({ type: ACTIONS.USER, payload: initialData });
               router.push("/");
             } else {
-              console.log("Please retry");
+              alert("Please retry");
             }
           });
           unsubscribe();
@@ -212,7 +213,7 @@ const useCustomFireHooks = () => {
                     router.push("/");
                   })
                   .catch((error) => {
-                    console.log("Error while signup", error.code);
+                    alert("Error while signup" + error.code);
                     return;
                   });
               }
@@ -220,7 +221,7 @@ const useCustomFireHooks = () => {
             }
           });
         } else {
-          console.log(error.code);
+          alert(error.code);
           return;
         }
       });
@@ -229,7 +230,6 @@ const useCustomFireHooks = () => {
   const anyonmousAuth = async () => {
     await signInAnonymously(auth).then(() => {
       const unsubscribe = onAuthStateChanged(auth, async (user) => {
-        console.log("useAuth auth set");
         if (user) {
           const initialData = {
             id: user.uid,
@@ -242,18 +242,53 @@ const useCustomFireHooks = () => {
             wishlist: [],
             phone: [],
           };
-          console.log(user);
+          await setDoc(doc(db, "users", user.uid), initialData);
           dispatch({ type: ACTIONS.AUTH, payload: user });
           dispatch({ type: ACTIONS.USER, payload: initialData });
           router.push("/");
         } else {
-          console.log("Error, retry login");
+          alert("Error, retry login");
         }
       });
       unsubscribe();
     });
   };
-  return { login, signUp, updateUserData, usingGoogleAuth, anyonmousAuth };
+
+  const forgotPassword = async () => {
+    const email = prompt("Enter your email address");
+    const emailRegex =
+      /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    if (email && emailRegex.test(email)) {
+      await sendPasswordResetEmail(auth, email)
+        .then(() => alert("sent"))
+        .catch((error) => {
+          alert(error);
+        });
+    } else {
+      alert("Invalid email. Please try again");
+    }
+  };
+
+  const updateUserProfile = async (data: any) => {
+    const userRef = doc(db, "users", auth.currentUser!.uid);
+    await updateDoc(userRef, data)
+      .then(() => {
+        console.log("updated");
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  };
+
+  return {
+    login,
+    signUp,
+    updateUserArrayData,
+    updateUserProfile,
+    usingGoogleAuth,
+    anyonmousAuth,
+    forgotPassword,
+  };
 };
 
 export default useCustomFireHooks;

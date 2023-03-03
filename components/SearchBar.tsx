@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useRef } from "react";
 import useMenuToggle from "../hooks/useMenuToggle";
 import useProductSearch from "../hooks/useProductSearch";
-import { getHref } from "../utils/handleForms";
+import { getHref } from "../utils/helperFunctions";
 
 const SearchBar = () => {
   const {

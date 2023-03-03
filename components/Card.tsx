@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getHref } from "../utils/handleForms";
+import { getHref } from "../utils/helperFunctions";
 
 const Card = ({ item, helperLink = "" }: any) => {
   return (

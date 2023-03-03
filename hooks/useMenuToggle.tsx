@@ -1,4 +1,4 @@
-import React, { MouseEvent, MouseEventHandler, useEffect } from "react";
+import React, { useEffect } from "react";
 
 const useMenuToggle = (ref: React.RefObject<HTMLElement>, id: string) => {
   //   useEffect for adding click event

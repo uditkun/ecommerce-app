@@ -1,11 +1,3 @@
-// const getFormValues = (currentRef: any) => {
-//   let modifiedData: any = {};
-//   Object.keys(currentRef).forEach((formKey: any) => {
-//     modifiedData[formKey] = currentRef[formKey].value;
-//   });
-//   return modifiedData;
-// };
-
 const validateForm = (formData: any): boolean => {
   const validRegex: any = {
     email:
@@ -19,18 +11,6 @@ const validateForm = (formData: any): boolean => {
 
   return isVerified;
 };
-
-// const headerFormSubmit = (
-//   e: FormEvent,
-//   formRef: RefObject<HTMLInputElement>
-// ) => {
-//   e.preventDefault();
-//   const searchVal = formRef.current?.value;
-//   //need some kind of validation
-//   if (searchVal) {
-//   }
-//   console.log(searchVal);
-// };
 
 const getHref = (name: string) => {
   return name

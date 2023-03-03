@@ -9,12 +9,10 @@ const Loader = () => {
   useEffect(() => {
     const loadingStart = () => {
       setLoading(true);
-      // console.log("event start");
     };
 
     const loadingComplete = () => {
       setLoading(false);
-      // console.log("event end");
     };
 
     router.events.on("routeChangeStart", loadingStart);

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getHref } from "../utils/handleForms";
+import { getHref } from "../utils/helperFunctions";
 import ProductCard from "./ProductCard";
 import useWishList from "../hooks/useWishList";
 

@@ -1,7 +1,6 @@
 import { SizeProp } from "@fortawesome/fontawesome-svg-core";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Link from "next/link";
 import { Product } from "../utils/types/Product";
 
 type WishlistHeartProps = {
@@ -22,7 +21,7 @@ const WishlistHeart = ({
     return <></>;
   }
   const { isOnWishlistCSS, isOnWishlist, showWishlistHeart } = wishlistHandlers;
-  // console.log(isOnWishlistCSS, isOnWishlist, showWishlistHeart);
+
   return (
     <FontAwesomeIcon
       className={isOnWishlistCSS(product.id, customCSS)}

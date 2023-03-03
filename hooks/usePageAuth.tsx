@@ -7,7 +7,6 @@ const usePageAuth = () => {
   const router = useRouter();
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      console.log("page auth changed");
       if (!user) {
         router.push("/");
       }

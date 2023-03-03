@@ -9,7 +9,7 @@ const useWishList = () => {
     user: { wishlist: wishlist },
   } = useGlobalState();
   const router = useRouter();
-  const { updateUserData } = useCustomFireHooks();
+  const { updateUserArrayData } = useCustomFireHooks();
 
   const isOnWishlist = (id: number): boolean => {
     return Boolean(wishlist?.find((item: Product) => item.id === id));
@@ -20,15 +20,19 @@ const useWishList = () => {
   };
 
   const removeFromWishlist = (product: Product) => {
-    updateUserData({ title: "wishlist", operation: "remove", data: product });
+    updateUserArrayData({
+      title: "wishlist",
+      operation: "remove",
+      data: product,
+    });
   };
   const addToWishlist = (product: Product) => {
-    updateUserData({ title: "wishlist", operation: "add", data: product });
+    updateUserArrayData({ title: "wishlist", operation: "add", data: product });
   };
   const showWishlistHeart = (product: Product) => {
     if (!Object.keys(auth).length) {
       router.push("/login");
-      console.log("Please login first");
+      alert("Please login first");
       return;
     }
     isOnWishlist(product.id)

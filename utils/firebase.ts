@@ -4,7 +4,6 @@ import {
   getAuth,
   connectAuthEmulator,
   GoogleAuthProvider,
-  signInWithPopup,
   browserLocalPersistence,
 } from "firebase/auth";
 import { getFirestore, connectFirestoreEmulator } from "firebase/firestore";
