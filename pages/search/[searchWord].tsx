@@ -154,6 +154,11 @@ function MainSearchShop() {
                 Reset
               </button>
             </li>
+            <li>
+              <p className="italic">
+                Discounts are currently disabled at checkout.
+              </p>
+            </li>
           </ul>
         </form>
       </nav>

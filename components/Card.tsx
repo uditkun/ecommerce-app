@@ -11,8 +11,8 @@ const Card = ({ item, helperLink = "" }: any) => {
       <Image
         className="rounded-t-md shadow-md object-contain w-full"
         src={item.imgSrc}
-        width={500}
-        height={500}
+        width={200}
+        height={200}
         sizes=" 400px,(max-width: 768px) 320px,(max-width: 1280px) 400px"
         alt="placeholder"
       />

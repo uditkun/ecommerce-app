@@ -10,6 +10,9 @@ import { getHref } from "../../utils/helperFunctions";
 import productsList from "../../utils/productsList";
 import useCustomFireHooks from "../../hooks/useCustomFireHooks";
 import useWishList from "../../hooks/useWishList";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { redirectForPayment } from "../../utils/stripe-helpers";
 
 export const getStaticPaths = () => {
   return {
@@ -38,9 +41,7 @@ export const getStaticProps = async ({ params }: any) => {
 
 function ProductPage({ product }: any) {
   const router = useRouter();
-  const {
-    user: { cart: cart },
-  } = useGlobalState();
+  const { auth, user } = useGlobalState();
   const dispatch = useDispatchGlobalState();
   const { updateUserArrayData } = useCustomFireHooks();
   const wishlist = useWishList();
@@ -50,15 +51,16 @@ function ProductPage({ product }: any) {
   }
   return (
     <section className="flex flex-col lg:flex-row gap-6 lg:gap-14 md:pl-24 lg:pl-8 px-4 pt-4 sm:px-8 sm:pt-8 max-w-7xl">
-      <div>
-        <div className="relative w-fit">
+      <div className="mx-auto">
+        <div className="relative max-w-[500px]">
           <Image
             className="rounded"
             src={product.imgSrc}
             alt="placeholder"
-            width={600}
-            height={400}
+            width={500}
+            height={350}
           />
+
           <WishlistHeart
             product={product}
             customCSS="right-2 top-2 p-3"
@@ -69,7 +71,7 @@ function ProductPage({ product }: any) {
         <div className="flex gap-4 mt-6 max-w-[600px]">
           <button
             onClick={() => {
-              let isProductInCart = cart?.find(
+              let isProductInCart = user?.cart?.find(
                 (i: Product) => i?.id === product?.id
               );
               if (isProductInCart) {
@@ -78,30 +80,27 @@ function ProductPage({ product }: any) {
                   operation: "remove",
                   data: product,
                 });
-                console.log("removed from cart");
               } else {
                 updateUserArrayData({
                   title: "cart",
                   operation: "add",
                   data: product,
                 });
-                console.log("added to cart");
               }
             }}
             className="py-3 px-4 bg-orange-400 text-white font-semibold rounded cursor-pointer flex-1"
           >
-            {cart?.find((i: any) => i?.id === product?.id)
+            {user?.cart?.find((i: any) => i?.id === product?.id)
               ? "Remove from Cart"
               : "Add to Cart"}
           </button>
           <button
             onClick={() => {
-              updateUserArrayData({
-                title: "checkout",
-                operation: "add",
-                data: { ...product, quantity: 1 },
-              });
-              router.push("/checkout");
+              if (!auth.uid) {
+                router.push("/login");
+                return;
+              }
+              redirectForPayment([{ ...product }], user?.email);
             }}
             className="py-3 px-4 bg-green-500 text-white font-semibold rounded cursor-pointer flex-1"
           >
@@ -116,17 +115,26 @@ function ProductPage({ product }: any) {
         <h3 className="font-semibold text-[28px] text-gray-800 mb-2">
           {product.name}
         </h3>
-        <div className="flex flex-col gap-2">
-          <span className="text-2xl font-bold">{product.price}</span>
-          <span>{product.rating}</span>
+        <div className="flex flex-col gap-1">
+          <span className="text-2xl font-bold">${product.price}</span>
+          <span className="font-bold">
+            <FontAwesomeIcon
+              className="mr-1 text-yellow-400"
+              size="lg"
+              icon={faStar}
+            ></FontAwesomeIcon>
+            <span
+              className={
+                product.rating > 4
+                  ? "bg-green-700 text-white py-1 px-2 rounded"
+                  : "bg-orange-400 text-black py-1 px-2 rounded"
+              }
+            >
+              {product.rating}
+            </span>
+          </span>
         </div>
-
-        <div className="flex flex-col">
-          <span>{product.delivery}</span>
-          <p>
-            <span>{product.offers}</span> Offers Available
-          </p>
-        </div>
+        <span>{product.delivery}</span>
       </div>
     </section>
   );

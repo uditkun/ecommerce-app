@@ -1,9 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
-import { CURRENCY, MIN_AMOUNT, MAX_AMOUNT } from "../../../utils/config";
-import { formatAmountForStripe } from "../../../utils/stripe-helpers";
-
 import Stripe from "stripe";
+import { CartProduct } from "../../../utils/types/Product";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   // https://github.com/stripe/stripe-node#configuration
   apiVersion: "2022-11-15",
@@ -14,30 +12,25 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "POST") {
-    const amount: number = req.body.amount;
     try {
-      // Validate the amount that was passed from the client.
-      if (!(amount >= MIN_AMOUNT && amount <= MAX_AMOUNT)) {
-        throw new Error("Invalid amount.");
-      }
       // Create Checkout Sessions from body params.
-      const params: Stripe.Checkout.SessionCreateParams = {
-        submit_type: "donate",
-        payment_method_types: ["card"],
-        line_items: [
-          {
-            price_data: {
-              currency: CURRENCY,
-              product_data: { name: "T-shirt" },
-              unit_amount: formatAmountForStripe(amount, CURRENCY),
-              tax_behavior: "exclusive",
-            },
-            adjustable_quantity: { enabled: true, minimum: 1, maximum: 10 },
+      const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] =
+        req?.body?.items.map((item: CartProduct) => {
+          return {
+            price: item.orderId,
             quantity: 1,
-          },
-        ],
-        success_url: `${req.headers.origin}/result?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${req.headers.origin}/donate-with-checkout`,
+            adjustable_quantity: { enabled: true, maximum: 10 },
+          };
+        });
+
+      const params: Stripe.Checkout.SessionCreateParams = {
+        mode: "payment",
+        payment_method_types: ["card"],
+        line_items: lineItems ?? [],
+        customer_email: req?.body?.email ?? "anyonmous@anyonmous.com",
+        success_url: `${req.headers.origin}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${req.headers.origin}/cart`,
+        currency: "usd",
       };
       const checkoutSession: Stripe.Checkout.Session =
         await stripe.checkout.sessions.create(params);

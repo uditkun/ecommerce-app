@@ -23,6 +23,7 @@ import {
   arrayRemove,
   onSnapshot,
   getDoc,
+  deleteField,
 } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { CartProduct, Product } from "../utils/types/Product";
@@ -132,7 +133,7 @@ const useCustomFireHooks = () => {
     operation: string;
     data: CartProduct | Product;
   }) => {
-    if (!auth.currentUser!.uid) {
+    if (!auth.currentUser) {
       router.push("/login");
       return;
     }

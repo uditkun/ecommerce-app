@@ -39,7 +39,7 @@ const useLogOut = () => {
         });
     }
     dispatch({ type: ACTIONS.AUTH, payload: {} });
-    dispatch({ type: ACTIONS.USER, payload: {} });
+    dispatch({ type: ACTIONS.USER, payload: { cart: [], wishlist: [] } });
     router.push("/");
   };
 };

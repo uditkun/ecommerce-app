@@ -6,12 +6,13 @@ import React from "react";
 import Card from "../components/Card";
 import { useGlobalState, useDispatchGlobalState } from "../components/Context";
 import useCustomFireHooks from "../hooks/useCustomFireHooks";
+import { redirectForPayment } from "../utils/stripe-helpers";
 import { CartProduct } from "../utils/types/Product";
 
 function Cart() {
   const router = useRouter();
   const {
-    user: { cart: cartProducts },
+    user: { cart: cartProducts, email },
     auth,
   } = useGlobalState();
   const dispatch = useDispatchGlobalState();
@@ -89,12 +90,7 @@ function Cart() {
                           router.push("/login");
                           return;
                         }
-                        updateUserArrayData({
-                          title: "checkout",
-                          operation: "add",
-                          data: { ...product, quantity: 1 },
-                        });
-                        router.push("/checkout");
+                        redirectForPayment([{ ...product }], email);
                       }}
                       className="py-2 px-4 bg-green-500 text-white rounded flex-1 text-center max-w-[150px]"
                     >
@@ -125,7 +121,7 @@ function Cart() {
               router.push("/login");
               return;
             }
-            router.push("/checkout");
+            redirectForPayment(cartProducts, email);
           }}
         >
           Buy All

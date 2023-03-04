@@ -1,4 +1,3 @@
-import React from "react";
 import ProductCard from "../../components/ProductCard";
 import { useGlobalState } from "../../components/Context";
 import Link from "next/link";
@@ -10,7 +9,7 @@ import useWishList from "../../hooks/useWishList";
 function Wishlist() {
   usePageAuth();
   const {
-    user: { wishlist: wishlist },
+    user: { wishlist },
   } = useGlobalState();
   const wishlistFunctions = useWishList();
 
@@ -28,9 +27,19 @@ function Wishlist() {
             </Link>
           ))
         ) : (
-          <p>Add some items to wishlist</p>
+          <>
+            <p>Add some items to wishlist</p>
+          </>
         )}
       </div>
+      {!wishlist?.length && (
+        <Link
+          href="/"
+          className="py-2 px-4 bg-slate-600 text-white mt-5 block max-w-fit rounded"
+        >
+          Go to shop
+        </Link>
+      )}
     </section>
   );
 }

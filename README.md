@@ -5,6 +5,7 @@ This is an ecommerce demo project built using [Next.js](https://nextjs.org/), [T
 - Responsive layout of web pages using Tailwind.
 - Authentication using Firebase auth.
 - Cart, Wishlist, Dashboard, Profile, etc features for user/client
+- Search functionality using React Query
 - Checkout functionality using stripe
 
 ### Some Implementation Specifics

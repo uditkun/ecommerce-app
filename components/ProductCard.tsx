@@ -34,14 +34,6 @@ const ProductCard = ({
         </div>
       </div>
       <span>Free delivery</span>
-      <span className="leading-[1.2]">
-        {details.offers ? (
-          <p>
-            Offer Available @{" "}
-            <strong className="text-green-600">{details.discount}%</strong>
-          </p>
-        ) : null}
-      </span>
     </div>
   );
 };

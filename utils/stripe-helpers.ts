@@ -1,49 +1,21 @@
-export function formatAmountForDisplay(
-  amount: number,
-  currency: string
-): string {
-  let numberFormat = new Intl.NumberFormat(["en-US"], {
-    style: "currency",
-    currency: currency,
-    currencyDisplay: "symbol",
-  });
-  return numberFormat.format(amount);
-}
+import getStripe from "./getStripe";
+import { CartProduct } from "./types/Product";
 
-export function formatAmountForStripe(
-  amount: number,
-  currency: string
-): number {
-  let numberFormat = new Intl.NumberFormat(["en-US"], {
-    style: "currency",
-    currency: currency,
-    currencyDisplay: "symbol",
-  });
-  const parts = numberFormat.formatToParts(amount);
-  let zeroDecimalCurrency: boolean = true;
-  for (let part of parts) {
-    if (part.type === "decimal") {
-      zeroDecimalCurrency = false;
-    }
-  }
-  return zeroDecimalCurrency ? amount : Math.round(amount * 100);
-}
-
-export function formatAmountFromStripe(
-  amount: number,
-  currency: string
-): number {
-  let numberFormat = new Intl.NumberFormat(["en-US"], {
-    style: "currency",
-    currency: currency,
-    currencyDisplay: "symbol",
-  });
-  const parts = numberFormat.formatToParts(amount);
-  let zeroDecimalCurrency: boolean = true;
-  for (let part of parts) {
-    if (part.type === "decimal") {
-      zeroDecimalCurrency = false;
-    }
-  }
-  return zeroDecimalCurrency ? amount : Math.round(amount / 100);
-}
+export const redirectForPayment = async (
+  itemsArr: CartProduct[],
+  email: string
+) => {
+  //stripe checkout
+  const { id } = await fetch(`${location.origin}/api/checkout`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      items: itemsArr,
+      email,
+    }),
+  }).then((res) => res.json());
+  // console.log(data);
+  //redirect to checkout
+  const stripe = await getStripe();
+  stripe?.redirectToCheckout({ sessionId: id });
+};
