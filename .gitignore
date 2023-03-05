@@ -28,8 +28,11 @@ ui-debug.log
 
 #firestore
 firestore-debug.log
+firebase-debug.log
 firestore.indexes.json
 firestore.rules
+firebase.json
+.firebaserc
 
 # local env files
 .env*.local
