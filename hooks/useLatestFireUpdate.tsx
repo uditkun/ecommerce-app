@@ -16,7 +16,14 @@ const useLatestFireUpdate = () => {
     if (globalState.auth.uid) {
       const userRef = doc(db, "users", auth.currentUser!.uid);
       unSubscribe = onSnapshot(userRef, (snap) => {
-        dispatch({ type: ACTIONS.USER, payload: snap.data() });
+        dispatch({
+          type: ACTIONS.USER,
+          payload: snap.data() ?? {
+            cart: [],
+            wishlist: [],
+            purchasedItems: [],
+          },
+        });
       });
     }
     return () => {

@@ -145,9 +145,12 @@ const useCustomFireHooks = () => {
       .then(async (userCredential) => {
         //for both login and signup
         const user = userCredential.user;
-        const isUserPresent = await getDoc(doc(db, "users", user.uid)).then(
-          (res) => res.data()
-        );
+        const isUserPresent = await getDoc(doc(db, "users", user.uid))
+          .then((res) => res.data())
+          .catch((error) => {
+            console.log(error);
+          });
+
         if (isUserPresent) {
           const unsubscribe = onAuthStateChanged(auth, async (user) => {
             if (user) {
@@ -221,8 +224,8 @@ const useCustomFireHooks = () => {
         if (user) {
           const initialData = {
             id: user.uid,
-            name: user.displayName,
-            email: user.email,
+            name: user.displayName ?? "anyonmous",
+            email: user.email ?? "anyonmous@anyonmous.com",
             gender: "",
             address: [],
             purchasedItems: [],

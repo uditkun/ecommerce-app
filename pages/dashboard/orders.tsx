@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  useGlobalState,
-  useDispatchGlobalState,
-  ACTIONS,
-} from "../../components/Context";
+import { useGlobalState } from "../../components/Context";
 import usePageAuth from "../../hooks/usePageAuth";
 import Card from "../../components/Card";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,6 +7,7 @@ import { faStar } from "@fortawesome/free-solid-svg-icons";
 import useLatestFireUpdate from "../../hooks/useLatestFireUpdate";
 import { useRouter } from "next/router";
 import { redirectForPayment } from "../../utils/stripe-helpers";
+import Link from "next/link";
 
 const Orders = () => {
   usePageAuth();
@@ -24,9 +21,7 @@ const Orders = () => {
 
   useEffect(() => {
     const getProducts: any[] = Object.values(
-      purchasedItems?.reduce((acc: any, curr: any) =>
-        Array(curr).concat(Array(acc))
-      )
+      purchasedItems.map((item: any) => Object.values(item)).flat()
     );
     if (getProducts.length) {
       setOrderedProducts(getProducts);
@@ -67,9 +62,13 @@ const Orders = () => {
                         product.created * 1000
                       ).toDateString()}`}</span>
                     </p>
+                    <p className="flex justify-between w-full mt-2">
+                      <span>Total</span>
+                      <strong>${product.price * product.quantity}</strong>
+                    </p>
                     <button
                       type="button"
-                      className="py-1 px-4 w-4/5 self-center mt-2 md:mt-4 bg-gray-600 text-white rounded flex-1 text-center max-w-[150px]"
+                      className="py-1 px-4 w-4/5 self-center mt-4 md:mt-6 bg-gray-600 text-white rounded flex-1 text-center max-w-[150px]"
                       onClick={() => {
                         if (!auth.uid) {
                           router.push("/");
@@ -89,7 +88,15 @@ const Orders = () => {
             );
           })
         ) : (
-          <p>Let&apos;s order some items</p>
+          <div>
+            <p>Let&apos;s order some items</p>
+            <Link
+              href="/"
+              className="py-2 px-4 bg-slate-600 text-white mt-5 block max-w-fit rounded mx-auto"
+            >
+              Go to shop
+            </Link>
+          </div>
         )}
       </ul>
     </section>

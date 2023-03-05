@@ -18,7 +18,7 @@ function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="max-w-screen-2xl mx-auto">
       <Header />
-      <main className="main relative">
+      <main className="main relative py-4">
         {/* <Snackbar /> */}
         <Loader />
         {children}

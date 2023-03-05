@@ -1,4 +1,3 @@
-import Slider from "../components/Slider";
 import Card from "../components/Card";
 import { Product } from "../utils/types/Product";
 import { useQuery } from "react-query";
@@ -23,7 +22,6 @@ function HomePage() {
   }
   return (
     <section className="mx-auto">
-      <Slider />
       <div className="flex gap-4 flex-wrap justify-center lg:justify-start items-center relative mx-auto max-w-[1200px] px-5">
         {isFetched &&
           productsList.map((item: Product) => (

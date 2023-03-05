@@ -33,6 +33,10 @@ const ProductCard = ({
           <span className="text-lg mr-2">${details.price}</span>
         </div>
       </div>
+      <span>
+        <span className="font-bold text-green-700">{details.discount}%</span>{" "}
+        discount
+      </span>
       <span>Free delivery</span>
     </div>
   );

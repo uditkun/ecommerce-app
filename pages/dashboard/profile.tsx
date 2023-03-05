@@ -63,6 +63,7 @@ const Profile = () => {
       });
     if (Object.keys(updateProfileObject).length) {
       updateUserProfile(updateProfileObject);
+      alert("Data updated");
     } else {
       alert("Oops! an error occured. Please retry");
     }

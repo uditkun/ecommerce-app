@@ -50,7 +50,7 @@ function ProductPage({ product }: any) {
     return <div>Loading...</div>;
   }
   return (
-    <section className="flex flex-col lg:flex-row gap-6 lg:gap-14 md:pl-24 lg:pl-8 px-4 pt-4 sm:px-8 sm:pt-8 max-w-7xl">
+    <section className="flex flex-col lg:flex-row gap-6 lg:gap-14 md:pl-24 lg:pl-8 px-4 sm:px-8 sm:pt-4 max-w-7xl">
       <div className="mx-auto">
         <div className="relative max-w-[500px]">
           <Image
@@ -71,6 +71,10 @@ function ProductPage({ product }: any) {
         <div className="flex gap-4 mt-6 max-w-[600px]">
           <button
             onClick={() => {
+              if (!auth.uid) {
+                router.push("/login");
+                return;
+              }
               let isProductInCart = user?.cart?.find(
                 (i: Product) => i?.id === product?.id
               );

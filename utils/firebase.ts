@@ -8,18 +8,15 @@ import {
 } from "firebase/auth";
 import { getFirestore, connectFirestoreEmulator } from "firebase/firestore";
 // import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyAkMvrz2DNiMTbbtPG4e7VnlUBm2tVy7co",
-  authDomain: "fir-e-shop-e8cdd.firebaseapp.com",
-  projectId: "fir-e-shop-e8cdd",
-  storageBucket: "fir-e-shop-e8cdd.appspot.com",
-  messagingSenderId: "993784839410",
-  appId: "1:993784839410:web:ca8f05821a610b958ea46b",
-  measurementId: "G-57XTJ5WSFC",
+  apiKey: process.env.NEXT_PUBLIC_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_PROJECTID,
+  storageBucket: process.env.NEXT_PUBLIC_STORAGEBUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_MESSAGING_SENDERID,
+  appId: process.env.NEXT_PUBLIC_APPID,
+  measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID,
 };
 
 // Initialize Firebase

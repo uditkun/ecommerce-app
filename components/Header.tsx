@@ -49,8 +49,10 @@ function Header() {
         <SearchBar />
 
         <ul className="flex items-center gap-2">
-          {/* <li className="p-2 cursor-pointer">Item 1</li>
-          <li className="p-2 cursor-pointer">Item 2</li> */}
+          {/* <li className="p-2 cursor-pointer">Item 1</li> */}
+          <li className="p-2 cursor-pointer">
+            <Link href="/faqs">FAQs</Link>
+          </li>
           <li className="p-2 cursor-pointer">
             <Link href="/cart">
               <FontAwesomeIcon icon={faShoppingCart} size="lg" />
