@@ -26,10 +26,10 @@ export const provider = new GoogleAuthProvider();
 auth.setPersistence(browserLocalPersistence);
 // export const analytics = getAnalytics(app);
 export const db = getFirestore(app);
-// if (typeof window !== "undefined") {
-//   if (location.hostname === "localhost") {
-//     connectAuthEmulator(auth, "http://localhost:9099");
-//     connectFirestoreEmulator(db, "localhost", 8080);
-//     // connectFunctionsEmulator(functions,'localhost',5001);
-//   }
-// }
+if (typeof window !== "undefined") {
+  if (location.hostname === "localhost") {
+    connectAuthEmulator(auth, "http://localhost:9099");
+    connectFirestoreEmulator(db, "localhost", 8080);
+    // connectFunctionsEmulator(functions,'localhost',5001);
+  }
+}
