@@ -1,8 +1,12 @@
 import getStripe from "./getStripe";
 import { CartProduct } from "./types/Product";
 
+type LineItem = {
+  orderId: string;
+};
+
 export const redirectForPayment = async (
-  itemsArr: CartProduct[],
+  itemsArr: LineItem[],
   email: string
 ) => {
   //stripe checkout

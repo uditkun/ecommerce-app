@@ -1,9 +1,6 @@
 import Slider from "../components/Slider";
 import Card from "../components/Card";
-// import productsList from "../utils/productsList";
-import useProductSearch from "../hooks/useProductSearch";
 import { Product } from "../utils/types/Product";
-import { useEffect } from "react";
 import { useQuery } from "react-query";
 
 function HomePage() {

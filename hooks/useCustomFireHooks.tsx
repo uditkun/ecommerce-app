@@ -21,31 +21,18 @@ import {
   updateDoc,
   arrayUnion,
   arrayRemove,
-  onSnapshot,
   getDoc,
-  deleteField,
 } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { CartProduct, Product } from "../utils/types/Product";
-import { useEffect } from "react";
+import useLatestFireUpdate from "./useLatestFireUpdate";
 
 const useCustomFireHooks = () => {
   const dispatch = useDispatchGlobalState();
   const globalState = useGlobalState();
   const router = useRouter();
 
-  useEffect(() => {
-    let unSubscribe = () => {};
-    if (globalState.auth.uid) {
-      const userRef = doc(db, "users", auth.currentUser!.uid);
-      unSubscribe = onSnapshot(userRef, (snap) => {
-        dispatch({ type: ACTIONS.USER, payload: snap.data() });
-      });
-    }
-    return () => {
-      return unSubscribe();
-    };
-  }, [dispatch, globalState.auth.uid]);
+  useLatestFireUpdate();
 
   const login = async (data: { email: string; password: string }) => {
     // seting persistence then sigininwithemailandpassword

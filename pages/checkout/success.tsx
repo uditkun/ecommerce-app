@@ -22,30 +22,43 @@ function Success() {
     },
     { staleTime: 10 * 60000 }
   );
-  useEffect(() => {
-    if (
-      data?.retrieve?.customer_email === auth.email ||
-      data?.retrieve?.customer_email === "anyonmous@anyonmous.com"
-    ) {
-      const purchasedItems = data?.lineItems?.data?.map((item: any) => {
+
+  const { data: products } = useQuery("products", async () => {
+    const rawData = await fetch(`${location.origin}/api/products`).then((res) =>
+      res.json()
+    );
+    return rawData;
+  });
+
+  if (
+    data?.retrieve?.customer_email === auth.email ||
+    data?.retrieve?.customer_email === "anyonmous@anyonmous.com"
+  ) {
+    const purchasedItems = data?.lineItems?.data
+      ?.map((item: any) => {
         return {
-          id: item?.price?.id,
+          orderId: item?.price?.id,
           created: item?.price?.created,
           product: item?.price?.product,
           unit_amount: item?.price?.unit_amount / 100,
           quantity: item?.quantity,
         };
+      })
+      .map((orderedProduct: any) => {
+        const product = products.find(
+          (i: any) => i.orderId === orderedProduct.orderId
+        );
+        return { ...product, ...orderedProduct };
       });
-      console.log(purchasedItems);
-      if (purchasedItems?.every((item: any) => item.id)) {
-        updateUserArrayData({
-          title: "purchasedItems",
-          operation: "add",
-          data: { ...purchasedItems },
-        });
-      }
+    console.log(purchasedItems);
+    if (purchasedItems?.every((item: any) => item.id)) {
+      updateUserArrayData({
+        title: "purchasedItems",
+        operation: "add",
+        data: { ...purchasedItems },
+      });
     }
-  }, [data, auth.email, updateUserArrayData]);
+  }
 
   if (isError) {
     return <p>Some error occured</p>;
@@ -58,7 +71,7 @@ function Success() {
     <>
       {isFetched && (
         <div>
-          <p>Yay! Your order is on its way!</p>{" "}
+          <p>Yay! Your order is on its way!</p>
           <p>Thank you for the purchase.</p>
         </div>
       )}

@@ -100,7 +100,7 @@ function ProductPage({ product }: any) {
                 router.push("/login");
                 return;
               }
-              redirectForPayment([{ ...product }], user?.email);
+              redirectForPayment([{ orderId: product.orderId }], user?.email);
             }}
             className="py-3 px-4 bg-green-500 text-white font-semibold rounded cursor-pointer flex-1"
           >

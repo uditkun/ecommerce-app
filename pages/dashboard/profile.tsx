@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useGlobalState } from "../../components/Context";
 import useCustomFireHooks from "../../hooks/useCustomFireHooks";
+import usePageAuth from "../../hooks/usePageAuth";
 
 type ProfileInputs = {
   name: string;
@@ -12,6 +13,7 @@ type ProfileInputs = {
 };
 
 const Profile = () => {
+  usePageAuth();
   const { user } = useGlobalState();
   const router = useRouter();
   const { updateUserProfile } = useCustomFireHooks();

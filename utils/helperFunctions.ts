@@ -12,7 +12,7 @@ const validateForm = (formData: any): boolean => {
   return isVerified;
 };
 
-const getHref = (name: string) => {
+const getHref = (name: string = "") => {
   return name
     .split(" ")
     .map((i) => i.toLowerCase())

@@ -4,46 +4,20 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import Card from "../components/Card";
-import { useGlobalState, useDispatchGlobalState } from "../components/Context";
+import { useGlobalState } from "../components/Context";
 import useCustomFireHooks from "../hooks/useCustomFireHooks";
+import usePageAuth from "../hooks/usePageAuth";
 import { redirectForPayment } from "../utils/stripe-helpers";
 import { CartProduct } from "../utils/types/Product";
 
 function Cart() {
+  usePageAuth();
   const router = useRouter();
   const {
-    user: { cart: cartProducts, email },
+    user: { cart: cartProducts, email, purchasedItems },
     auth,
   } = useGlobalState();
-  const dispatch = useDispatchGlobalState();
   const { updateUserArrayData } = useCustomFireHooks();
-
-  const getCheckoutItems = () => {
-    const initialCheckoutItems = [
-      ...auth.checkedOutItems,
-      ...cartProducts.map((item: CartProduct) => {
-        item.quantity ||= 1;
-        return item;
-      }),
-    ];
-    const uniqueItems = initialCheckoutItems.filter(
-      (product: CartProduct, index: number, arr: CartProduct[]) =>
-        arr.findIndex((item: any) => item.id === product.id) === index
-    );
-
-    const uniqueList = uniqueItems
-      .map((product: CartProduct) => {
-        return initialCheckoutItems.filter(
-          (item: CartProduct) => item.id === product.id
-        );
-      })
-      .map((arr: any[]) => {
-        return arr.reduce((acc: CartProduct, curr: CartProduct) => {
-          return { ...acc, quantity: curr.quantity + acc.quantity };
-        });
-      });
-    return uniqueList;
-  };
 
   return (
     <section className="p-4">
@@ -90,7 +64,10 @@ function Cart() {
                           router.push("/login");
                           return;
                         }
-                        redirectForPayment([{ ...product }], email);
+                        redirectForPayment(
+                          [{ orderId: product.orderId }],
+                          email
+                        );
                       }}
                       className="py-2 px-4 bg-green-500 text-white rounded flex-1 text-center max-w-[150px]"
                     >
@@ -121,7 +98,12 @@ function Cart() {
               router.push("/login");
               return;
             }
-            redirectForPayment(cartProducts, email);
+            redirectForPayment(
+              cartProducts.map((item: CartProduct) => {
+                return { orderId: item.orderId };
+              }),
+              email
+            );
           }}
         >
           Buy All
