@@ -13,3 +13,5 @@ This is an ecommerce demo project built using [Next.js](https://nextjs.org/), [T
 - Functional Components.
 - Custom hooks to improve readability, reducing lines of code and upholding DRY principle.
 - React query for better async data fetching.
+
+You can view the live website here:- https://cheery-alpaca-b48bfa.netlify.app/
