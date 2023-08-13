@@ -1,4 +1,11 @@
-import React, { useEffect, useRef } from "react";
+import React, {
+  LegacyRef,
+  MouseEventHandler,
+  MutableRefObject,
+  RefObject,
+  useEffect,
+  useRef,
+} from "react";
 import { useRouter } from "next/router";
 import useProductSearch from "../../hooks/useProductSearch";
 import ProductsList from "../../components/ProductsList";
@@ -24,11 +31,16 @@ function MainSearchShop() {
     mainFilter: filteredProducts,
   } = useSearchFilter(data);
 
+  const filterRef = useRef<any>();
+
   return (
     <div className="flex flex-col sm:flex-row p-6 relative">
-      <nav className="w-80 absolute sm:static z-10">
+      <nav
+        ref={filterRef}
+        className="w-80 absolute top-24 sm:static z-10 transition-transform duration-500 translate-x-[-110%]"
+      >
         {/* filter */}
-        <form className="shadow-light-stepIn max-w-80 py-5 px-4 rounded sticky top-[175px] sm:top-[80px]">
+        <form className="shadow-light-stepIn max-w-80 py-5 px-4 rounded sticky top-[175px] sm:top-[80px] bg-white">
           <p className="text-lg font-bold pb-2">Filters</p>
           <ul className="flex flex-col gap-4">
             {/* price */}
@@ -162,6 +174,21 @@ function MainSearchShop() {
           </ul>
         </form>
       </nav>
+
+      <button
+        onClick={(e: any) => {
+          filterRef.current.classList.toggle("translate-x-0");
+          let btnText = e.target;
+          if (btnText.innerText === "Hide Filters") {
+            btnText.textContent = "Show Filters";
+          } else {
+            btnText.textContent = "Hide Filters";
+          }
+        }}
+        className="sm:hidden bg-orange-600 text-white px-4 py-1 w-fit self-end rounded"
+      >
+        Show Filters
+      </button>
 
       <section className="h-full w-full mx-auto mt-10 sm:mt-0">
         <div className="grid gap-6 grid-cols-auto-1x lg:grid-cols-auto-2x items-center justify-center">
