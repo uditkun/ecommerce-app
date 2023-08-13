@@ -41,7 +41,7 @@ function Header() {
 
   return (
     <nav className="sticky top-0 bg-gray-800 z-50">
-      <div className="flex flex-col items-center justify-between gap-2 px-8 pt-2 pb-4 mx-auto text-white sm:flex-row sm:pb-2 max-w-7xl relative">
+      <div className="flex flex-col items-center justify-between gap-2 px-8 pt-2 pb-4 mx-auto text-white sm:flex-row sm:pb-2 max-w-[1400px] relative">
         <Link href="/">
           <span className="cursor-pointer text-lg font-bold">E-shop</span>
         </Link>
